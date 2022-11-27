@@ -11,5 +11,21 @@
 </template>
 
 <script setup>
+import { onMounted } from "vue";
 import { RouterLink, RouterView } from "vue-router";
+
+import { useAuthStore } from "./stores/auth";
+import { useCollectionStore } from "./stores/collection";
+
+const authStore = useAuthStore();
+const collectionStore = useCollectionStore();
+
+onMounted(() => {
+  if (authStore.getAppInstance().currentUser) {
+    authStore.currentUser = authStore.getAppInstance().currentUser;
+    collectionStore.setMongodbInstance();
+  } else {
+    authStore.currentUser = null;
+  }
+});
 </script>
